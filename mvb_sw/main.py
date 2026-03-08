@@ -26,7 +26,9 @@ def input_listener():
         input("Press Enter to stop recording...")
         record_flag.clear()
 
-threading.Thread(target=input_listener, daemon=True).start() # 
+threading.Thread(target=input_listener, daemon=True).start() # daemon=true, means that the thread will be killed/stopped if tha main.py script reaches its end
+                                                            #in this case, when camera_record dies for e.g. due to hitting q
+                                                            # you can keep it running in the background by setting daemon=false (thread runs until it finishes on its own)
 
 
 camera_record(URL, record_flag)
