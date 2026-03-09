@@ -2,8 +2,8 @@ import requests
 import json
 
 # Replace these with your actual IDs
-NOTION_TOKEN = "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"
-DATABASE_ID = "31eb2667451780568429e014105d5b9b"
+NOTION_TOKEN = "="
+DATABASE_ID = "="
 
 headers = {
     "Authorization": "Bearer " + NOTION_TOKEN,
