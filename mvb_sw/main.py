@@ -14,6 +14,7 @@ then ....
 from record_reduced import camera_record
 from stitching_ocr import stitch_video_and_ocr
 import threading
+from notion_test import add_row_to_notion
 
 URL = "http://192.168.116.207:81/stream"
 
@@ -32,6 +33,7 @@ def input_listener():
         print("Stitching and OCRing...")
         text = stitch_video_and_ocr('roi_capture.mp4')
         print(text)
+        add_row_to_notion(text, "Done")
 
 threading.Thread(target=input_listener, daemon=True).start() # daemon=true, means that the thread will be killed/stopped if tha main.py script reaches its end
                                                             #in this case, when camera_record dies for e.g. due to hitting q
