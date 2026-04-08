@@ -119,6 +119,16 @@ if __name__ == '__main__':
             break
 
         if count % frame_skip == 0:
+
+
+            # Recommendation for MVB: Books often have shadows from the binding. 
+            # Before thresholding, apply a Dilation/Erosion or a Median Blur to remove noise. 
+            # Also, Pytesseract works significantly better if the text is perfectly horizontal. 
+            # Since your stitching might result in a slight "wave," you might want to look into 
+            # deskewing libraries later.
+            # consult a comouter vision expert to improve this bit for you if u needed more accuracy
+
+
             # essential filtering ... would yield better results if w/ flashlight
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             img = cv2.adaptiveThreshold(frame, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 27, 3)

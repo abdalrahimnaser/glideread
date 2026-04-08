@@ -12,11 +12,18 @@
 const char* ssid = "Galaxy S22+9414";
 const char* password = "ajxg6831";
 
+// const char* ssid = "North Block";
+// const char* password = "367tgb#NB";
+
+
 void startCameraServer();
 void setupLedFlash(int pin);
 
 #define REG_VCM_CONTROL_0  0x3602
 #define REG_VCM_CONTROL_1  0x3603
+
+#define BUTTON_PIN  1 // ESP32 pin GPIO18, which connected to button
+#define LED_PIN     2 // ESP32 pin GPIO21, which connected to led
 
 sensor_t * s;
 
@@ -149,19 +156,15 @@ void setup() {
     set_focus(s,1023);
   }
 
-
-
-// Setup LED FLash if LED pin is defined in camera_pins.h
-#if defined(LED_GPIO_NUM)
-  setupLedFlash(LED_GPIO_NUM);
-#endif
+  delay(5000);
 
   WiFi.begin(ssid, password);
   WiFi.setSleep(false);
 
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+    delay(1000);
+    Serial.println(WiFi.status());
+    // Serial.print(".");
   }
   Serial.println("");
   Serial.println("WiFi connected");
@@ -172,11 +175,17 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
   Serial.println("enter the camera focus value");
+
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
 }
 
 void loop() {
+  if (digitalRead(BUTTON_PIN) == LOW){digitalWrite(LED_PIN, HIGH);}
+  else{digitalWrite(LED_PIN, LOW);}
+
   // Do nothing. Everything is done in another task by the web server
-if (Serial.available() > 0) {
+  if (Serial.available() > 0) {
     // Read the input until a newline character
     String input = Serial.readStringUntil('\n');
     input.trim(); // Remove any stray spaces or carriage returns
