@@ -22,8 +22,6 @@ void setupLedFlash(int pin);
 #define REG_VCM_CONTROL_0  0x3602
 #define REG_VCM_CONTROL_1  0x3603
 
-#define BUTTON_PIN  1 // ESP32 pin GPIO18, which connected to button
-#define LED_PIN     2 // ESP32 pin GPIO21, which connected to led
 
 sensor_t * s;
 
@@ -176,13 +174,11 @@ void setup() {
   Serial.println("' to connect");
   Serial.println("enter the camera focus value");
 
-  pinMode(LED_PIN, OUTPUT);
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
 }
 
 void loop() {
-  if (digitalRead(BUTTON_PIN) == LOW){digitalWrite(LED_PIN, HIGH);}
-  else{digitalWrite(LED_PIN, LOW);}
+
 
   // Do nothing. Everything is done in another task by the web server
   if (Serial.available() > 0) {

@@ -3,6 +3,7 @@
 #include "hal/gpio_types.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "wifi_provisioner.h"
 
 #define BUTTON_PIN 1
 #define LED_PIN    2
@@ -41,6 +42,21 @@ void app_main(void)
 
 
 void setup(){
+    // wifi setup 
+
+    // // Configure and start the provisioner
+    // wifi_prov_config_t config = WIFI_PROV_DEFAULT_CONFIG();
+    // config.ap_ssid = "MyDevice-Setup";
+    // // more details @ https://github.com/MichMich/esp-idf-wifi-provisioner
+    // ESP_ERROR_CHECK(wifi_prov_start(&config));
+
+    // // Block until connected (or use the event callback for non-blocking)
+    // wifi_prov_wait_for_connection(portMAX_DELAY); // this is to wait till connection happens ... blocks the whole excution if wasn't successful, maybe think of a better way
+    
+    // camera setup
+    // refer to https://esp32tutorials.com/esp32-cam-esp-idf-live-streaming-web-server/
+    // note that PSRAM must be enabled, can do thru menuconfig.
+
     // led setup
     gpio_reset_pin(LED_PIN);
     gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT);
