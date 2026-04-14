@@ -100,8 +100,9 @@ def stitch_video_and_ocr(video_path, frame_skip=1, H_templ_ratio=0.65):
     global H_templ_ratio_
     H_templ_ratio_ = H_templ_ratio
     images = []
-    cap = cv2.VideoCapture('roi_capture.mp4')
-    frame_skip = 1
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        raise FileNotFoundError(f'OpenCV: Couldn\'t read video stream from file "{video_path}"')
     count = 0
     while True:
         ret, frame = cap.read()
@@ -125,6 +126,10 @@ def stitch_video_and_ocr(video_path, frame_skip=1, H_templ_ratio=0.65):
 
         count += 1
     
+    cap.release()
+    if not images:
+        raise ValueError(f"No frames decoded from video: {video_path}")
+    
     templates_loc = [] # templates location
 
     matchImages(images, templates_loc)
@@ -132,6 +137,5 @@ def stitch_video_and_ocr(video_path, frame_skip=1, H_templ_ratio=0.65):
     result = stitchImages(images, templates_loc)
     text = pytesseract.image_to_string(result)
     # cv2.imshow("result", result)
-    cv2.imwrite("stitched_result.png", result)
 
-    return text
+    return text, result

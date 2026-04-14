@@ -4,3 +4,4 @@
 * implement the "Python polls ESP" logic: i.e. on button press, esp sets scan_ready=true, then python pulls http://<ESP_IP>/scan_state
  -> Once it sees scan_ready, it begins scanning and optionally tells ESP “acknowledged” (POST /ack).
 * mDNS for discoveribility from python app.
+* microphone.

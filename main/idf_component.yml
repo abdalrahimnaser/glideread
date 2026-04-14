@@ -1,2 +1,3 @@
 dependencies:
   MichMich/esp-idf-wifi-provisioner: '*'
+  espressif/esp32-camera: "*"
