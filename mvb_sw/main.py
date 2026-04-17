@@ -22,8 +22,8 @@ from typing import Optional
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 
-URL = "http://192.168.55.43/stream"
-SCAN_STATE_URL = "http://192.168.55.43:81/scan_state"
+URL = "http://192.168.55.39/stream"
+SCAN_STATE_URL = "http://192.168.55.39:81/scan_state"
 
 record_flag = threading.Event()
 recording_done = threading.Event()   # signaled once the video file is fully written

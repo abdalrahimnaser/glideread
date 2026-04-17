@@ -12,9 +12,9 @@
 // define before including camera_pins.h
 #define CAMERA_MODEL_XIAO_ESP32S3
 #include "camera_pins.h"
-// #include "ESP32_OV5640_cfg.h"
-// #define REG_VCM_CONTROL_0  0x3602
-// #define REG_VCM_CONTROL_1  0x3603
+#include "ESP32_OV5640_cfg.h"
+#define REG_VCM_CONTROL_0  0x3602
+#define REG_VCM_CONTROL_1  0x3603
 
 #define BUTTON_PIN 1
 #define LED_PIN    2
@@ -49,6 +49,57 @@ int8_t prev_button_state = 1; // assume released at boot (pull-up)
 int8_t led_state = 0; // active high
 
 
+
+
+sensor_t * s;
+
+uint16_t focus = 0;
+
+int set_focus(sensor_t *s, uint16_t vcm_value)
+{
+  // Set DAC bits 3:0 into reg bits 7:4
+  s->set_reg(s, REG_VCM_CONTROL_0, 0xF0, vcm_value << 4);
+  // Set DAC bits 9:4 into reg bits 5:0
+  s->set_reg(s, REG_VCM_CONTROL_1, 0x3F, vcm_value >> 4);
+  focus = vcm_value;
+  return 0;
+}
+
+uint8_t focusInit(sensor_t *sensor) {
+  uint16_t i;
+  uint16_t addr = 0x8000;
+  uint8_t state = 0x8F;
+  uint8_t rc = 0;
+  rc = sensor->set_reg(sensor, 0x3000, 0xff, 0x20);  //reset
+  if (rc < 0) return -1;
+
+  for (i = 0; i < sizeof(OV5640_AF_Config); i++) {
+    rc = sensor->set_reg(sensor, addr, 0xff, OV5640_AF_Config[i]);
+    if (rc < 0) return -1;
+
+    addr++;
+  }
+
+  sensor->set_reg(sensor, OV5640_CMD_MAIN, 0xff, 0x00);
+  sensor->set_reg(sensor, OV5640_CMD_ACK, 0xff, 0x00);
+  sensor->set_reg(sensor, OV5640_CMD_PARA0, 0xff, 0x00);
+  sensor->set_reg(sensor, OV5640_CMD_PARA1, 0xff, 0x00);
+  sensor->set_reg(sensor, OV5640_CMD_PARA2, 0xff, 0x00);
+  sensor->set_reg(sensor, OV5640_CMD_PARA3, 0xff, 0x00);
+  sensor->set_reg(sensor, OV5640_CMD_PARA4, 0xff, 0x00);
+  sensor->set_reg(sensor, OV5640_CMD_FW_STATUS, 0xff, 0x7f);
+  sensor->set_reg(sensor, 0x3000, 0xff, 0x00);
+
+  i = 0;
+  do {
+    state = sensor->get_reg(sensor, 0x3029, 0xff);
+    vTaskDelay(pdMS_TO_TICKS(5));
+    i++;
+    if (i > 1000) return 1;
+  } while (state != FW_STATUS_S_IDLE);
+
+  return 0;
+}
 
 void app_main(void)
 {
@@ -89,13 +140,19 @@ void setup(){
         .pixel_format = PIXFORMAT_JPEG,
 
         // Simple defaults for streaming; override later.
-        .frame_size = FRAMESIZE_QVGA,
+        .frame_size = FRAMESIZE_240X240,
         .jpeg_quality = 12,
         .fb_count = 2,
-        .grab_mode = CAMERA_GRAB_LATEST,
+        .grab_mode = CAMERA_GRAB_WHEN_EMPTY,
         .fb_location = CAMERA_FB_IN_PSRAM,
     };
     esp_camera_init(&cfg);
+
+    s = esp_camera_sensor_get();
+    if (s->id.PID == OV5640_PID) {
+        focusInit(s);
+        set_focus(s,1023);
+    }
 
 
     // led setup
@@ -166,11 +223,12 @@ void runStateMachine() {
             led_state = 0;
             if (button_state == 0){
                 currentState = SCANNING;
+                // send the trigger here
             }
             break;
             
         case SCANNING:
-            //led_state = 1;
+            led_state = 1;
             if (button_state == 1){
                 currentState = IDLE;
             }

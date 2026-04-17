@@ -10,7 +10,7 @@ def camera_record(url, record_flag: threading.Event, recording_done: threading.E
         exit()
 
     # Center crop: set either to an int to crop, or None to use full flipped frame.
-    crop_w, crop_h = None, None    # Example (MVB strip): crop_w, crop_h = 300, 80
+    crop_w, crop_h = 250, 40    # Example (MVB strip): crop_w, crop_h = 300, 80
 
     out = None
     recording = False
@@ -19,7 +19,7 @@ def camera_record(url, record_flag: threading.Event, recording_done: threading.E
         ret, frame = cap.read()
         if not ret:
             break
-        frame = cv2.flip(frame, -1)
+        #frame = cv2.flip(frame, 1)
         fh, fw = frame.shape[:2]
         if crop_w is None or crop_h is None:
             roi = frame
