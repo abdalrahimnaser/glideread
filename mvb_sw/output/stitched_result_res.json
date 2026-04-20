@@ -1,0 +1,95 @@
+{
+    "input_path": "stitched_result.png",
+    "page_index": null,
+    "page_count": null,
+    "width": 893,
+    "height": 62,
+    "model_settings": {
+        "use_doc_preprocessor": false,
+        "use_layout_detection": true,
+        "use_chart_recognition": false,
+        "use_seal_recognition": false,
+        "use_ocr_for_image_block": false,
+        "format_block_content": false,
+        "merge_layout_blocks": true,
+        "markdown_ignore_labels": [
+            "number",
+            "footnote",
+            "header",
+            "header_image",
+            "footer",
+            "footer_image",
+            "aside_text"
+        ],
+        "return_layout_polygon_points": true
+    },
+    "parsing_res_list": [
+        {
+            "block_label": "text",
+            "block_content": "In business, a 'lean' enterprise is sustainable efficiency in action",
+            "block_bbox": [
+                0,
+                0,
+                893,
+                62
+            ],
+            "block_id": 0,
+            "block_order": 1,
+            "group_id": 0,
+            "block_polygon_points": [
+                [
+                    0.0,
+                    0.0
+                ],
+                [
+                    893.0,
+                    0.0
+                ],
+                [
+                    893.0,
+                    62.0
+                ],
+                [
+                    0.0,
+                    62.0
+                ]
+            ]
+        }
+    ],
+    "layout_det_res": {
+        "input_path": null,
+        "page_index": null,
+        "boxes": [
+            {
+                "cls_id": 22,
+                "label": "text",
+                "score": 0.3670715391635895,
+                "coordinate": [
+                    0,
+                    0,
+                    893,
+                    62
+                ],
+                "order": 1,
+                "polygon_points": [
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        893.0,
+                        0.0
+                    ],
+                    [
+                        893.0,
+                        62.0
+                    ],
+                    [
+                        0.0,
+                        62.0
+                    ]
+                ]
+            }
+        ]
+    }
+}

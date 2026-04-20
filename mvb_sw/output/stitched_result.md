@@ -1,0 +1,1 @@
+In business, a 'lean' enterprise is sustainable efficiency in action

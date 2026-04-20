@@ -58,6 +58,8 @@ dist/
 
 # Virtual environment folders
 venv/
+venv311/
+.venv311/
 .venv/
 env/
 
