@@ -3,8 +3,22 @@ import threading
 from notion_test import add_row_to_notion
 import time
 import cv2
+import os
+
+# PaddleOCRVL uses PaddleX pipelines/models which may attempt to probe remote
+# model hosters at startup; for packaged/offline scenarios we disable that probe.
+os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
+
 from paddleocr import PaddleOCRVL
-pipeline = PaddleOCRVL()
+
+pipeline = None
+
+
+def get_pipeline():
+    global pipeline
+    if pipeline is None:
+        pipeline = PaddleOCRVL()
+    return pipeline
 
 
 URL = "http://192.168.55.39/stream"
@@ -49,7 +63,7 @@ def esp_trigger_listener():
                 recording_done.wait()
                 result = stitch_video('roi_capture.mp4')
                 cv2.imwrite("stitched_result.png", result)
-                ocr_result = pipeline.predict("stitched_result.png")
+                ocr_result = get_pipeline().predict("stitched_result.png")
                 text = ocr_result[0]['parsing_res_list'][0].content
                 print(text)
                 # add_row_to_notion(text, "Done")
