@@ -62,7 +62,10 @@ venv311/
 .venv311/
 .venv/
 env/
-#
+#pyinstaller
+dist/
+build/
+
 # Language Servers
 .clangd/
 .ccls-cache/

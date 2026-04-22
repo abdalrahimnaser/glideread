@@ -1,47 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
-from PyInstaller.utils.hooks import collect_all
-from PyInstaller.utils.hooks import copy_metadata
-
-datas = []
-binaries = []
-hiddenimports = []
-datas += copy_metadata('paddlex')
-datas += copy_metadata('paddleocr')
-datas += copy_metadata('paddlepaddle')
-datas += copy_metadata('Jinja2')
-datas += copy_metadata('beautifulsoup4')
-datas += copy_metadata('einops')
-datas += copy_metadata('ftfy')
-datas += copy_metadata('imagesize')
-datas += copy_metadata('lxml')
-datas += copy_metadata('opencv-contrib-python')
-datas += copy_metadata('openpyxl')
-datas += copy_metadata('premailer')
-datas += copy_metadata('pyclipper')
-datas += copy_metadata('pypdfium2')
-datas += copy_metadata('python-bidi')
-datas += copy_metadata('regex')
-datas += copy_metadata('safetensors')
-datas += copy_metadata('scikit-learn')
-datas += copy_metadata('scipy')
-datas += copy_metadata('sentencepiece')
-datas += copy_metadata('shapely')
-datas += copy_metadata('tiktoken')
-datas += copy_metadata('tokenizers')
-tmp_ret = collect_all('paddle')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
-tmp_ret = collect_all('paddleocr')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
-tmp_ret = collect_all('paddlex')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
 
 a = Analysis(
     ['mvb_sw/main.py'],
     pathex=[],
-    binaries=binaries,
-    datas=datas,
-    hiddenimports=hiddenimports,
+    binaries=[],
+    datas=[],
+    hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
